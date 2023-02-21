@@ -1,8 +1,6 @@
 #include "rsa.h"
 
 
-//This structure contain all the necessary information for computing an RSA keypair. 
-//Yet the program return the public/private key and clear this structure
 struct RSA_KEYPAIR {
     BIGNUM *public_modulus;         //public modulus: n
     BIGNUM *public_exponent;        //public exponent: e
@@ -15,8 +13,15 @@ struct RSA_KEYPAIR {
 };
 
 
+int consistency_test(struct RSA_KEYPAIR *kp_struct) {
+    return 0;
+}
+
 
 int generate_private_exponent(struct RSA_KEYPAIR *kp_struct) {
+    BIGNUM *d_exponent = BN_new();
+    BIGNUM *phi = BN_new();
+
     BN_CTX *tmp_var = BN_CTX_new();
     BIGNUM *minus_one = BN_new();
     BN_one(minus_one);
@@ -44,8 +49,6 @@ int generate_primes_factors(struct RSA_KEYPAIR *kp_struct, int prime_Bits) {
     BIGNUM *q_candidate;
 
     //Code
-
-    //...
     kp_struct->p_factor = p_candidate;
     kp_struct->q_factor = q_candidate;
     BN_free(p_candidate);
@@ -62,7 +65,6 @@ int rsa_generation(int nBits) {
         return EXIT_FAILURE;
     }
 
-    //init the keypair structure
     struct RSA_KEYPAIR *kp_struct = &(struct RSA_KEYPAIR) {};
     BN_CTX *tmp_var = BN_CTX_new();
 
@@ -76,6 +78,9 @@ int rsa_generation(int nBits) {
     //init public modulus
     BN_mul(kp_struct->public_modulus, kp_struct->p_factor, kp_struct->q_factor, tmp_var);
     BN_CTX_free(tmp_var);
+
+    //verify the correctness of the keypair
+    consistency_test(kp_struct);
 
     return 0;
 }

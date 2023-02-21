@@ -5,9 +5,9 @@
 #include <stdio.h>
 #include <openssl/bn.h>
 
-
 struct RSA_KEYPAIR;
 
+int consistency_test(struct RSA_KEYPAIR *kp_struct);
 int generate_private_exponent(struct RSA_KEYPAIR *kp_struct);
 int generate_primes_factors(struct RSA_KEYPAIR *kp_struct, int prime_Bits);
 int rsa_generation(int nBits);
