@@ -1,6 +1,9 @@
 #include "rsa.h"
 
 
+
+//This structure contain all the necessary information for computing an RSA keypair. 
+//Yet the program return the public/private key and clear this structure
 struct RSA_KEYPAIR {
     BIGNUM *public_modulus;         //public modulus: n
     BIGNUM *public_exponent;        //public exponent: e

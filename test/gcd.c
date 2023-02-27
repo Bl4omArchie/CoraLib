@@ -1,4 +1,6 @@
-#include "rsa.h"
+#include <openssl/bn.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 
 int bn_to_int(BIGNUM *a) {
@@ -6,27 +8,25 @@ int bn_to_int(BIGNUM *a) {
     return (int)sto;
 }
 
-int gcd(BIGNUM *sto, BIGNUM *a, BIGNUM *b) {
-    if (BN_is_zero(a)) {
-        BN_copy(sto, a);
-        return EXIT_SUCCESS;
-    } 
 
-    if (BN_is_zero(b)) {
-        BN_copy(sto, b);
-        return EXIT_SUCCESS;
+int binary_gcd(BIGNUM *sto, BIGNUM *a, BIGNUM *b) {
+    if (BN_is_zero(a) || BN_is_zero(b)) {
+        BN_zero(sto);
+        return EXIT_FAILURE;
     }
 
     BIGNUM *az = BN_new();
     BIGNUM *bz = BN_new();
     BIGNUM *diff = BN_new();
     BIGNUM *shift = BN_new();
+    unsigned char *nb_ptr;
 
     if (BN_cmp(az, bz) == -1)
         BN_copy(shift, a);
     
     else
         BN_copy(shift, b);
+    
     BN_rshift(b, b, bn_to_int(bz));
 
     while (!BN_is_zero(a)) {
@@ -39,6 +39,7 @@ int gcd(BIGNUM *sto, BIGNUM *a, BIGNUM *b) {
 
         BN_copy(a, diff);
     }
+
     BN_lshift(b, b, bn_to_int(shift));
     BN_copy(sto, b);
 
@@ -48,4 +49,23 @@ int gcd(BIGNUM *sto, BIGNUM *a, BIGNUM *b) {
     BN_free(shift);
 
     return 1;
+}
+
+
+int main() {
+    BIGNUM *sto;
+    BIGNUM *a;
+    BIGNUM *b;
+
+    unsigned char *a_str = "82019154470699086128524248488673846867876336512717";
+    unsigned char *b_str = "12345678765343456545678877890987876542345665512717";
+
+    printf ("ok");
+
+    BN_dec2bn(&a, a_str);
+    BN_dec2bn(&b, b_str);
+    binary_gcd(sto, a, b);
+
+    FILE *fp = fopen("gcd_test", "w");
+    BN_print_fp(fp, sto);
 }

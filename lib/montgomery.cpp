@@ -1,7 +1,7 @@
 #include "lib.hpp"
 
 /*
-Montgomerry C++ class
+Montgomerry C++ struct
 */
 
 
@@ -11,18 +11,22 @@ struct Montgomery {
     int transform(BIGNUM *x);
 
     BIGNUM *n;
-    BIGNUM *nr;
+    const BIGNUM *nr;
+
+    constexpr Montgomery(BIGNUM *n) : n(n) {
+        
+    }
+
+    int reduce(BIGNUM *n) const {
+        return 1;
+    }
+
+    int multiply(BIGNUM *x, BIGNUM *y) const {
+        return 1;
+    }
+
+    int transform(BIGNUM *x) const {
+        return 1;
+    }
+
 };
-
-
-int Montgomery::reduce(BIGNUM *n) {
-    return 1;
-}
-
-int Montgomery::multiply(BIGNUM *x, BIGNUM *y) {
-    return 1;
-}
-
-int Montgomery::transform(BIGNUM *x) {
-    return 1;
-}
