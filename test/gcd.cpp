@@ -1,6 +1,7 @@
 #include <openssl/bn.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
 
 
 int bn_to_int(BIGNUM *a) {
@@ -57,14 +58,14 @@ int main() {
     BIGNUM *a;
     BIGNUM *b;
 
-    std::string *a_str = {"82019154470699086128524248488673846867876336512717"};
-    std::string *b_str "12345678765343456545678877890987876542345665512717";
-
+    const char *a_str = "82019154470699086128524248488673846867876336512717";
+    const char *b_str = "12345678765343456545678877890987876542345665512717";
 
     BN_dec2bn(&a, a_str);
     BN_dec2bn(&b, b_str);
     binary_gcd(sto, a, b);
 
-    FILE *fp = fopen("gcd_test", "w");
+    FILE *fp = fopen("gcd_result_file.txt", "w");
     BN_print_fp(fp, sto);
+    fclose(fp);
 }
